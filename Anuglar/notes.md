@@ -48,10 +48,33 @@ There are two ways are reading the parameter.
 1. Use the Router Service
   * Import the service
   * Define it as dependency
+  ```typescript
+      import { ActivatedRoute, Router } from '@angular/router';
+      export class ProductDetailComponent implements OnInit {
+       .
+       .
+       .
+        onBack(): void {
+          this.router.navigate(['/products']);
+        }
+
+      }
+  ```
 2. Create a method that calls the navigate method of the router service
   * Pass in the link parameters array
 3. Add a user interface element
   * Use event binding to bind to the created method
+  ```html
+      <div class="card" *ngIf='product'>
+        <div class="card-header">
+          {{pageTitle + ': '  + product.productName + '- '+ product.productId}}
+        </div>
+
+        <button class='btn btn-outline-secondary' style='width:90px' (click)='onBack()'>
+          <i class='fa fa-chevron-left'>BACK</i>
+        </button>
+      </div>
+  ```
   
 ### Protecting Routes with Guards
 
