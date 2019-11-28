@@ -81,6 +81,41 @@ There are two ways are reading the parameter.
 1. Buld a guard service
   * Implement the gaurd type (CanActivate)
   * Create the method (CanActivate())
-2. Rgister the gaurd service provider
+  ```typescript
+      import { Injectable } from '@angular/core';
+      import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
+      import { Observable } from 'rxjs';
+
+      @Injectable({
+        providedIn: 'root'
+      })
+      export class ProductDetailGuard implements CanActivate {
+
+        constructor(private router: Router) {
+
+        }
+        canActivate(
+          next: ActivatedRouteSnapshot,
+          state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+            const id = +next.url[1].path;
+            if (isNaN(id) || (id < 1)) {
+              alert('Invalid product Id');
+              this.router.navigate(['/products']);
+              return false;
+            }
+            return true;
+        }
+
+      }
+  ```
+2. Register the gaurd service provider
   * Use the providedIn property
 3. Add the gaurd to the desired route.
+  ```typescript
+  RouterModule.forRoot([
+      {path: 'products', component: ProductListComponent},
+      {path: 'products/:id', canActivate: [ProductDetailGuard], component: ProductDetailComponent},
+      .
+      .
+    ])
+  ```
